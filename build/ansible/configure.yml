@@ -1,0 +1,6 @@
+- hosts: all
+  become: yes
+  roles:
+    - { role: CONQOON.baseconfig, tags: baseconfig }
+  handlers:
+    - include: handlers/handlers.yml

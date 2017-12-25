@@ -1,0 +1,36 @@
+---
+- hosts: "{{ src_host | mandatory }}"
+  become: yes
+  tasks:
+    - name: Make sure tmp folder exists
+      file: path={{ sync_tmp_folder }} state=directory owner={{ ansible_env.SUDO_USER }}
+
+    - name: Cleanup old file archives
+      file: path={{ item.archive }} state=absent
+      with_items: sync_folders_to_sync
+
+    - name: Create tar archives of folders
+      shell: "cd {{ item.folder }} && /bin/tar cfvj {{ item.archive }} ."
+      with_items: sync_folders_to_sync
+
+- hosts: "{{ dest_host | mandatory }}"
+  become: yes
+  tasks:
+    - name: Make sure tmp folder exists
+      file: path={{ sync_tmp_folder }} state=directory owner={{ ansible_env.SUDO_USER }}
+
+    # It is important to use 'become: no' here, otherwise ssh-agent forwarding would not work
+    - name: Rsync temp folder to new host
+      become: no
+      synchronize:
+        src: "{{ sync_tmp_folder }}/"
+        dest: "{{ sync_tmp_folder }}"
+      delegate_to: "{{ src_host }}"
+
+    - name: Restore archives
+      shell: "mkdir -p {{ item.folder }} && /bin/tar xfvj {{ item.archive }} -C {{ item.folder }}"
+      with_items: sync_folders_to_sync
+
+    - name: Cleanup file archives
+      file: path={{ item.archive }} state=absent
+      with_items: sync_folders_to_sync

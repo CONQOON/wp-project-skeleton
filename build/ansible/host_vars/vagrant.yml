@@ -1,0 +1,26 @@
+env: development
+
+synced_dir: "/mnt/vagrant"
+
+server_hostname: "{{ project_name }}.local"
+
+# Lets encrypt
+ssl_cert_type: "selfsigned"
+
+baseconfig_create_user_and_group: no
+baseconfig_allow_passwordless_sudo: yes
+
+# geerlingguy.mysql
+mysql_root_password_update: yes
+mysql_root_password: "123456"
+mysql_databases:
+  - name: "{{ project_name }}"
+mysql_users:
+  - name: "{{ project_name }}"
+    host: "localhost"
+    password: "123456"
+    priv: "{{ project_name }}.*:ALL,GRANT"
+
+# Mailhog
+mailhog_install: yes
+php_sendmail_path: "{{ mailhog_install_dir }}/mhsendmail"

@@ -1,0 +1,135 @@
+#########
+# PROJECT
+#########
+
+# Certain tasks may operate in a less secure (but more convenient) manner, eg.
+# enabling passwordless sudo or generating self-signed ssl certs, when testing
+# locally, in Vagrant. But not in production!
+# Possible values: production, staging or development
+env: production
+
+# This var is referenced by a few other vars, eg. git_repo, hostname, site_fqdn.
+project_name: wp-project
+server_hostname: "{{ project_name }}.local"
+
+server_ssl_cert_type: "selfsigned"
+#server_ssl_cert_type: "letsencrypt"
+#server_ssl_cert_type: "custom"
+
+server_ssl_key_file: "/etc/ssl/{{ server_hostname }}.key"
+server_ssl_cert_file: "/etc/ssl/{{ server_hostname }}.crt"
+server_base_path: "/var/www"
+server_app_path: "{{ server_base_path }}/{{ project_name }}"
+server_web_path: "{{ server_app_path }}/public/wp"
+
+# Set distribution version to be 16.04"
+ansible_distribution_version: "16.04"
+
+
+######################
+# ADDITIONAL PACKAGES
+######################
+
+# CONQOON.baseconfig
+baseconfig_hostname: "{{ server_hostname }}"
+baseconfig_allow_passwordless_sudo: no
+baseconfig_create_user_and_group: yes
+baseconfig_project_user: "{{ project_name }}"
+baseconfig_project_group: "{{ project_name }}"
+baseconfig_project_path: "{{ server_app_path }}"
+
+# geerlingguy.ntp
+ntp_enabled: yes
+ntp_timezone: Europe/Berlin
+
+# geerlingguy.php
+php_source_version: "php-5.6.32"
+php_webserver_daemon: "nginx"
+php_conf_path: "/etc/php5/fpm"
+php_extension_conf_path: "{{ php_conf_path }}/conf.d"
+php_enable_php_fpm: yes
+
+php_date_timezone: "Europe/Berlin"
+php_memory_limit: "512M"
+php_max_execution_time: "240"
+php_max_input_time: "120"
+php_max_input_vars: "2000"
+php_realpath_cache_size: "32K"
+php_upload_max_filesize: "50M"
+php_post_max_size: "50M"
+php_fpm_listen: "/var/run/php5-fpm.sock"
+php_fpm_listen_allowed_clients: "127.0.0.1"
+php_packages:
+  - php7.0-common
+  - php7.0-cli
+  - php7.0-dev
+  - php7.0-fpm
+  - libpcre3-dev
+  - php7.0-gd
+  - php7.0-curl
+  - php7.0-imap
+  - php7.0-json
+  - php7.0-opcache
+  - php7.0-xml
+  - php7.0-mbstring
+  - php-sqlite3
+  - php-apcu
+  - php7.0-intl
+  - php-geoip
+  - php7.0-mcrypt
+  - php-redis
+  - php-imagick
+  - imagemagick
+  - graphicsmagick
+  - php7.0-mysql
+  - php7.0-zip
+  - php7.0-soap
+
+# geerlingguy.mysql
+mysql_root_password_update: yes
+mysql_root_password: ""
+mysql_databases:
+  - name: "{{ project_name }}"
+mysql_users:
+  - name: "{{ project_name }}"
+    host: "localhost"
+    password: ""
+    priv: "{{ project_name }}.*:ALL,GRANT"
+
+# nginx
+nginx_conf_template: "../../../templates/nginx.conf.j2"
+nginx_vhosts:
+  - listen: "443 ssl http2"
+    server_name: "{{ server_hostname }} www.{{ server_hostname }}"
+    root: "{{ server_web_path }}"
+    index: "index index.php index.html index.htm"
+    filename: "{{ server_hostname }}.443.conf"
+    extra_parameters: |
+      location ~ \.php$ {
+          fastcgi_split_path_info ^(.+\.php)(/.+)$;
+          fastcgi_pass unix:/var/run/php5-fpm.sock;
+          fastcgi_index index.php;
+          fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+          include fastcgi_params;
+      }
+      ssl_session_cache shared:SSL:10m;
+      ssl_certificate     {{ server_ssl_cert_file }};
+      ssl_certificate_key {{ server_ssl_key_file }};
+      ssl_protocols       TLSv1.2;
+      ssl_ciphers         HIGH:!aNULL:!MD5;
+
+      add_header Strict-Transport-Security max-age=63072000;
+      add_header X-Content-Type-Options nosniff;
+
+  - listen: "80"
+    server_name: "{{ server_hostname }} www.{{ server_hostname }}"
+    return: "301 https://{{ server_hostname }}$request_uri"
+    filename: "{{ server_hostname }}.80.conf"
+
+
+# andreaswolf.letsencrypt
+letsencrypt_certs:
+  - name: "{{ project_name }}"
+    keypath: "{{ ssl_key_file }}"
+    certpath: "{{ ssl_cert_file }}"
+    host: "{{ server_hostname }}"

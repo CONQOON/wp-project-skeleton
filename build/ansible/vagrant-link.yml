@@ -1,0 +1,6 @@
+# Link local development directories to vagrant machine. So it is possible to see all local changes directly on the
+- hosts: vagrant
+  become: yes
+  tasks:
+    - name: link vagrant synced directory to make it live
+      file: path="{{ server_app_path }}" state=link src="{{ synced_dir }}" force=yes

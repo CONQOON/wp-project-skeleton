@@ -1,0 +1,6 @@
+# This playbook will be run on the vagrant box after vagrant up
+- include: provision.yml
+- include: configure.yml
+
+# This playbook is only meant for the vagrant environment
+- include: vagrant-link.yml

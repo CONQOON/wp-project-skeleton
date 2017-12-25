@@ -1,0 +1,25 @@
+---
+
+# This playbook is meant to run once to setup the server and it's configurations
+
+# Install python 2
+- hosts: all
+  gather_facts: no
+  tasks:
+  - name: install python 2
+    raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+
+# Run only on the vagrant host
+- hosts: webservers:vagrant
+  become: yes
+  roles:
+    - { role: geerlingguy.ntp, tags: ntp }
+    - { role: CONQOON.baseconfig, tags: baseconfig }
+    - { role: geerlingguy.php, tags: php }
+    - { role: geerlingguy.mysql, tags: mysql }
+    - { role: geerlingguy.nginx, tags: nginx }
+    - { role: andreaswolf.letsencrypt, tags: letsencrypt, when: server_ssl_cert_type == "letsencrypt" }
+    - { role: geerlingguy.mailhog, tags: mailhog, when: mailhog_install }
+
+  handlers:
+    - include: handlers/handlers.yml

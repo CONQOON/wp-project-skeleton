@@ -133,3 +133,6 @@ letsencrypt_certs:
     keypath: "{{ ssl_key_file }}"
     certpath: "{{ ssl_cert_file }}"
     host: "{{ server_hostname }}"
+
+# php-xdebug
+php_xdebug_install: no

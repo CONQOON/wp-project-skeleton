@@ -12,6 +12,9 @@
 - src: geerlingguy.php
   version: "3.5.0"
 
+- src: geerlingguy.php-xdebug
+  version: "2.4.0"
+
 # Composer
 - src: geerlingguy.composer
   version: "1.6.1"

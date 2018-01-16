@@ -29,3 +29,4 @@ php_sendmail_path: "{{ mailhog_install_dir }}/mhsendmail"
 php_xdebug_install: yes
 php_xdebug_remote_enable: yes
 php_xdebug_remote_connect_back: yes
+php_xdebug_idekey: "PHPSTORM"

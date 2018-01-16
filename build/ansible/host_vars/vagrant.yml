@@ -27,6 +27,8 @@ php_sendmail_path: "{{ mailhog_install_dir }}/mhsendmail"
 
 # php-xdebug
 php_xdebug_install: yes
+php_xdebug_version: "2.6.0beta1"
 php_xdebug_remote_enable: yes
 php_xdebug_remote_connect_back: yes
+php_xdebug_remote_autostart: yes
 php_xdebug_idekey: "PHPSTORM"

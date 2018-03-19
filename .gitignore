@@ -1,6 +1,3 @@
-init.retry
 build/ansible/roles
-index.php
-license.txt
-code/public/wp
-code/vendor
+vendor
+web/wp

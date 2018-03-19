@@ -23,7 +23,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Allow the project directory to be accessible inside the Vagrant box.
   # This should match the Ansible host_vars/vagrant synced_folder value.
   config.vm.synced_folder ".", "/vagrant", disabled: true
-  config.vm.synced_folder './code', '/mnt/vagrant', type: "nfs", mount_options: ['rw', 'vers=3', 'tcp'], linux__nfs_options: ['rw','no_subtree_check','all_squash','async']
+  config.vm.synced_folder './web', '/mnt/vagrant', type: "nfs", mount_options: ['rw', 'vers=3', 'tcp'], linux__nfs_options: ['rw','no_subtree_check','all_squash','async']
 
   # Ideally, this IP will be unique, so the entry added to /etc/hosts won't
   # conflict with that of another project.

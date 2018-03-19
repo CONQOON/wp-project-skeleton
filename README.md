@@ -1,5 +1,9 @@
 # CONQOON wordpress project skeleton
 
+## About
+The main part of this project skeleton is based on roots/bedrock
+https://github.com/roots/bedrock/blob/master/composer.json
+
 ## Setup your project
 
 ### Install Vagrant plugins

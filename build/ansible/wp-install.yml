@@ -1,0 +1,17 @@
+---
+
+# This playbook expects an already installed web server with php and mysql database and a valid
+# composer.json to install wordpress
+#
+# This playbook will perform a composer install to install wordpress and will then proceede to configure
+# wordpress
+
+# Composer Install
+- hosts: all
+  become: yes
+  roles:
+    - { role: CONQOON.composer-install, tags: composer-install }
+    - { role: CONQOON.wp-dotenv, tags: wp-dotenv }
+
+  handlers:
+   - include: handlers/handlers.yml

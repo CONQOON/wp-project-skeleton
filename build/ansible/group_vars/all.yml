@@ -20,10 +20,10 @@ server_ssl_key_file: "/etc/ssl/{{ server_hostname }}.key"
 server_ssl_cert_file: "/etc/ssl/{{ server_hostname }}.crt"
 server_base_path: "/var/www"
 server_app_path: "{{ server_base_path }}/{{ project_name }}"
-server_web_path: "{{ server_app_path }}/public/wp"
+server_web_path: "{{ server_app_path }}/web/wp"
 
-# Set distribution version to be 16.04"
-ansible_distribution_version: "16.04"
+# Set distribution version to be 18.04"
+ansible_distribution_version: "18.04"
 
 
 ######################
@@ -43,12 +43,13 @@ ntp_enabled: yes
 ntp_timezone: Europe/Berlin
 
 # geerlingguy.php
-php_source_version: "php-7.0.26"
+php_source_version: "php-7.2.6"
 php_webserver_daemon: "nginx"
-php_conf_path: "/etc/php7.0/fpm"
+php_conf_path: "/etc/php7.2/fpm"
 php_extension_conf_path: "{{ php_conf_path }}/conf.d"
 php_enable_php_fpm: yes
 
+php_executable: "/usr/bin/php"
 php_date_timezone: "Europe/Berlin"
 php_memory_limit: "512M"
 php_max_execution_time: "240"
@@ -57,33 +58,33 @@ php_max_input_vars: "2000"
 php_realpath_cache_size: "32K"
 php_upload_max_filesize: "50M"
 php_post_max_size: "50M"
-php_fpm_listen: "/var/run/php7.0-fpm.sock"
+php_fpm_listen: "/var/run/php7.2-fpm.sock"
 php_fpm_listen_allowed_clients: "127.0.0.1"
 php_packages:
-  - php7.0-common
-  - php7.0-cli
-  - php7.0-dev
-  - php7.0-fpm
+  - php7.2-common
+  - php7.2-cli
+  - php7.2-dev
+  - php7.2-fpm
   - libpcre3-dev
-  - php7.0-gd
-  - php7.0-curl
-  - php7.0-imap
-  - php7.0-json
-  - php7.0-opcache
-  - php7.0-xml
-  - php7.0-mbstring
+  - php7.2-gd
+  - php7.2-curl
+  - php7.2-imap
+  - php7.2-json
+  - php7.2-opcache
+  - php7.2-xml
+  - php7.2-mbstring
   - php-sqlite3
   - php-apcu
-  - php7.0-intl
+  - php7.2-intl
   - php-geoip
-  - php7.0-mcrypt
+  - libmcrypt-dev
   - php-redis
   - php-imagick
   - imagemagick
   - graphicsmagick
-  - php7.0-mysql
-  - php7.0-zip
-  - php7.0-soap
+  - php7.2-mysql
+  - php7.2-zip
+  - php7.2-soap
 
 # geerlingguy.mysql
 mysql_root_password_update: yes
@@ -136,3 +137,17 @@ letsencrypt_certs:
 
 # php-xdebug
 php_xdebug_install: no
+
+# composer install
+composer_install_project_path: "{{ server_app_path }}"
+
+# Wordpress config (wp-config)
+wp_dotenv_target_dir: "{{ server_app_path }}"
+wp_dotenv_env: "production"
+wp_dotenv_file_owner: "root"
+wp_dotenv_file_group: "root"
+wp_dotenv_db_name: "{{ project_name }}"
+wp_dotenv_db_user: "{{ project_name }}"
+wp_dotenv_db_host: "localhost"
+wp_dotenv_db_tableprefix: "{{ project_name }}_"
+wp_dotenv_url: "https://{{ server_hostname }}"

@@ -18,7 +18,7 @@ end
 SHARING = OSX ? { nfs: true } : nil
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = 'bento/ubuntu-16.04'
+  config.vm.box = 'bento/ubuntu-18.04'
 
   # Allow the project directory to be accessible inside the Vagrant box.
   # This should match the Ansible host_vars/vagrant synced_folder value.

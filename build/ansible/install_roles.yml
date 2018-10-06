@@ -3,29 +3,42 @@
   name: CONQOON.baseconfig
   version: 9542a14d6325aed03ecfb95a0d3dd84095569d0f
 
+# composer install
+- src: git+https://github.com/CONQOON/CONQOON.composer-install.git
+  name: CONQOON.composer-install
+  version: b9dff65753888bd9c0fb3df4017bb4faffd44e95
+
+# .env
+- src: git+https://github.com/CONQOON/CONQOON.wp-dotenv.git
+  name: CONQOON.wp-dotenv
+  version: f6b531a45e452d273adee3fb8074d3cb514bb746
+
 # NTP
 - src: geerlingguy.ntp
-  version: "1.5.2"
+  version: "1.6.0"
 
 # PHP
-# To use PHP5.x for ubuntu 14 use version: "2.0.3"
 - src: geerlingguy.php
-  version: "3.5.0"
+  version: "3.6.0"
+
+# PHP Versions ( this is needed to be able to install php 7.1 and later)
+- src: geerlingguy.php_versions
+  version: "2.1.3"
 
 - src: geerlingguy.php-xdebug
-  version: "2.4.0"
+  version: "2.5.0"
 
 # Composer
 - src: geerlingguy.composer
-  version: "1.6.1"
+  version: "1.7.0"
 
 # MySQL
 - src: geerlingguy.mysql
-  version: "2.8.0"
+  version: "2.9.0"
 
 # Composer
 - src: geerlingguy.nginx
-  version: "2.5.0"
+  version: "2.6.0"
 
 # Let's encrypt
 - src: andreaswolf.letsencrypt
@@ -33,8 +46,8 @@
 
 # daemonize
 - src: geerlingguy.daemonize
-  version: "1.2.0"
+  version: "1.2.1"
 
 # mailhog
 - src: geerlingguy.mailhog
-  version: "2.1.3"
+  version: "2.1.4"

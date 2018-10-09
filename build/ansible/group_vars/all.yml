@@ -37,6 +37,8 @@ baseconfig_create_user_and_group: yes
 baseconfig_project_user: "{{ project_name }}"
 baseconfig_project_group: "{{ project_name }}"
 baseconfig_project_path: "{{ server_app_path }}"
+baseconfig_apt_packages:
+  - unzip
 
 # geerlingguy.ntp
 ntp_enabled: yes

@@ -15,12 +15,14 @@
   roles:
     - { role: geerlingguy.ntp, tags: ntp }
     - { role: CONQOON.baseconfig, tags: baseconfig }
+    - { role: geerlingguy.php-versions, tags: php-versions }
     - { role: geerlingguy.php, tags: php }
     - { role: geerlingguy.mysql, tags: mysql }
     - { role: geerlingguy.nginx, tags: nginx }
     - { role: andreaswolf.letsencrypt, tags: letsencrypt, when: server_ssl_cert_type == "letsencrypt" }
     - { role: geerlingguy.mailhog, tags: mailhog, when: mailhog_install }
-    - { role: geerlingguy.php-xdebug, tags: xdebug, when: php_xdebug_install}
+    - { role: geerlingguy.php-xdebug, tags: xdebug, when: php_xdebug_install }
+    - { role: geerlingguy.composer, tags: composer }
 
   handlers:
     - include: handlers/handlers.yml

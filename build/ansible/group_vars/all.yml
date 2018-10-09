@@ -20,7 +20,7 @@ server_ssl_key_file: "/etc/ssl/{{ server_hostname }}.key"
 server_ssl_cert_file: "/etc/ssl/{{ server_hostname }}.crt"
 server_base_path: "/var/www"
 server_app_path: "{{ server_base_path }}/{{ project_name }}"
-server_web_path: "{{ server_app_path }}/web/wp"
+server_web_path: "{{ server_app_path }}/web"
 
 # Set distribution version to be 18.04"
 ansible_distribution_version: "18.04"
